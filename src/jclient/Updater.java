@@ -171,18 +171,19 @@ public class Updater implements Runnable{
                 {
                     String downkey = (String)enu.nextElement();
                     String downvalue = (String)this.DOWNLOADED_OBJECTS.get(downkey);
-                    if(this.OLD_OBJECTS.containsKey(downkey))
+                    if(this.OLD_OBJECTS.containsKey(downkey)) // this shows OLD_OBJECTS already has the object
                     {
-                        if(!(this.OLD_OBJECTS.get(downkey).equals(this.DOWNLOADED_OBJECTS.get(downkey))))
+                        if(!(this.OLD_OBJECTS.get(downkey).equals(this.DOWNLOADED_OBJECTS.get(downkey)))) // check if object in OLD is same version as DOWNLOADED
                         {
                             try
                             {
-                                if(!this.CHANGE_LOADED)
+                                if(!this.CHANGE_LOADED) // before making any changes in CHANGED_OBJECTS, see if its contents were downloaded
                                 {
-                                    this.CHANGED_OBJECTS.wait();
-                                    this.CHANGED_OBJECTS.put(downkey, downvalue);
-                                    this.CHANGE_LOADED = false;
-                                    this.CHANGED_OBJECTS.notifyAll();
+                                    this.CHANGED_OBJECTS.wait(); // wait for download to complete
+                                    this.CHANGED_OBJECTS.put(downkey, downvalue); // now put the object list in change order
+                                    this.CHANGE_LOADED = false; // toggle that the change needs to be downloaded again
+                                    this.CHANGED_OBJECTS.notifyAll(); // notify the download thread that new version is here
+                                    // later the downloader will update the OLD_OBJECTS as per the downloads made
                                 }
                             }catch(java.lang.InterruptedException ex)
                             {
@@ -190,15 +191,16 @@ public class Updater implements Runnable{
                             }
                         }
                     }
-                    else
+                    else // this shows that OLD_OJECTS do not contain the downloaded object reference at all. So its a new download
                     {
                         try
                         {
-                            if(!this.CHANGE_LOADED)
+                            if(!this.CHANGE_LOADED) // check if previous download is complete
                             {
-                                this.CHANGED_OBJECTS.wait();
-                                this.CHANGED_OBJECTS.put(downkey, downvalue);
-                                this.CHANGE_LOADED = false;
+                                this.CHANGED_OBJECTS.wait(); // and wait
+                                this.CHANGED_OBJECTS.put(downkey, downvalue); // now put the new download to change for downloader to download
+                                this.CHANGE_LOADED = false; // toggle that new change is here for downloader to download
+                                this.CHANGED_OBJECTS.notifyAll();
                             }
                         }catch(java.lang.InterruptedException ex)
                         {
