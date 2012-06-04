@@ -29,5 +29,6 @@ public class JClient {
         String centralurl = "http://" + centralserver + "/";
 
         Updater updater = new Updater(centralurl, objectfile);
+        Downloader downloader = new Downloader(centralurl, updater);
     }
 }
