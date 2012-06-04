@@ -120,15 +120,16 @@ public class Updater implements Runnable{
     }
     
     // just in case method; might need in the future; but currently handling thru thread wait and notify
-    public boolean isChangeLoaded()
+    public synchronized boolean isChangeLoaded()
     {
         return this.CHANGE_LOADED;
     }
     
     // just in case method; might need in the future; but currently handling thru thread wait and notify
-    public void setChangeLoaded(boolean change)
+    public synchronized void setChangeLoaded(boolean change)
     {
         this.CHANGE_LOADED = change;
+        this.CHANGED_OBJECTS.clear();
     }
     
     /**
@@ -143,6 +144,7 @@ public class Updater implements Runnable{
     {
         if(this.FIRST_RUN)
         {
+            System.out.println("This is first run. Download all please.");
             synchronized(this.CHANGED_OBJECTS)
             {
                 java.util.Enumeration enu = this.DOWNLOADED_OBJECTS.keys();
