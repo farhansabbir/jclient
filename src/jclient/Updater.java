@@ -114,11 +114,13 @@ public class Updater implements Runnable{
         }
     }
     
+    // just in case method; might need in the future; but currently handling thru thread wait and notify
     public boolean isChangeLoaded()
     {
         return this.CHANGE_LOADED;
     }
     
+    // just in case method; might need in the future; but currently handling thru thread wait and notify
     public void setChangeLoaded(boolean change)
     {
         this.CHANGE_LOADED = change;
