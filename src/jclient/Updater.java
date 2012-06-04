@@ -70,6 +70,11 @@ public class Updater implements Runnable{
         // AddRemove = 1 Add/Download
     }
     
+    /**
+     * This method checks the objects file for new objects available, populates DOWNLOADED_OBJECTS only
+     * and calls checkLocalObjects to verify and download what needs to be downloaded.
+     */
+    
     public void readObjects()
     {
         this.HTTP_CONN = null;
@@ -125,6 +130,10 @@ public class Updater implements Runnable{
     {
         this.CHANGE_LOADED = change;
     }
+    
+    /**
+     * Below method checks and populates CHANGED_OBJECTS and OLD_OBJECTS from DOWNLOADED_OBJECTS read in readObjects()
+     */
     
     // all downloads are carried out by looking into CHANGED_OBJECTS list.
     // the OLD_OBJECTS hold the last successfully used objects
