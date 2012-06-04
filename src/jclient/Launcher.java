@@ -8,6 +8,11 @@ package jclient;
  *
  * @author fsabbir
  */
-public class Launcher {
+public class Launcher implements Runnable{
+    
+    public void run()
+    {
+        
+    }
     
 }

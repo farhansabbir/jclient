@@ -18,9 +18,12 @@ public class Downloader implements Runnable{
     private boolean DONE;
     private HttpURLConnection HTTP_CONN;
     private Updater updater;
+    private Thread THREAD;
     
     public Downloader(String url, Updater updater)
     {
+        this.THREAD = new Thread(this);
+        this.THREAD.start();
         
     }
     
