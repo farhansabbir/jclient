@@ -114,6 +114,16 @@ public class Updater implements Runnable{
         }
     }
     
+    public boolean isChangeLoaded()
+    {
+        return this.CHANGE_LOADED;
+    }
+    
+    public void setChangeLoaded(boolean change)
+    {
+        this.CHANGE_LOADED = change;
+    }
+    
     // all downloads are carried out by looking into CHANGED_OBJECTS list.
     // the OLD_OBJECTS hold the last successfully used objects
     // the DOWNLOADED_OBJECTS is responsible to hold list of objects found in central server
@@ -128,7 +138,8 @@ public class Updater implements Runnable{
                 String key = (String)enu.nextElement();
                 String value = (String)this.DOWNLOADED_OBJECTS.get(key);
                 this.OLD_OBJECTS.put(key, value);
-                this.CHANGED_OBJECTS.put(key, value);
+                this.CHANGED_OBJECTS.put(key, value); // insert what I have to download
+                this.CHANGE_LOADED = false; // toggle the change state
             }
             this.FIRST_RUN = false;
         }
