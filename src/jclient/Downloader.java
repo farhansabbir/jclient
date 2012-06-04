@@ -18,7 +18,7 @@ public class Downloader implements Runnable{
     private boolean DONE;
     private HttpURLConnection HTTP_CONN;
     
-    public Downloader(URL url, Hashtable objs)
+    public Downloader(URL url, Hashtable objs, Updater updater)
     {
         
     }
