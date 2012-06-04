@@ -143,16 +143,21 @@ public class Updater implements Runnable{
     {
         if(this.FIRST_RUN)
         {
-            java.util.Enumeration enu = this.DOWNLOADED_OBJECTS.keys();
-            while(enu.hasMoreElements())
+            synchronized(this.CHANGED_OBJECTS)
             {
-                String key = (String)enu.nextElement();
-                String value = (String)this.DOWNLOADED_OBJECTS.get(key);
-                this.OLD_OBJECTS.put(key, value);
-                this.CHANGED_OBJECTS.put(key, value); // insert what I have to download
-                this.CHANGE_LOADED = false; // toggle the change state
+                java.util.Enumeration enu = this.DOWNLOADED_OBJECTS.keys();
+                while(enu.hasMoreElements())
+                {
+                    String key = (String)enu.nextElement();
+                    String value = (String)this.DOWNLOADED_OBJECTS.get(key);
+                    this.OLD_OBJECTS.put(key, value);
+                    this.CHANGED_OBJECTS.put(key, value); // insert what I have to download
+                    this.CHANGE_LOADED = false; // toggle the change state
+                    this.CHANGED_OBJECTS.notifyAll(); // notify the downloader that a change is here
+                }
+                this.FIRST_RUN = false;
             }
-            this.FIRST_RUN = false;
+            
         }
         else
         {
