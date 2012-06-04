@@ -44,8 +44,6 @@ public class Updater implements Runnable{
         }
     }
     
-    
-    
     public Updater(String url)
     {
         try
@@ -74,7 +72,6 @@ public class Updater implements Runnable{
     
     public void readObjects()
     {
-        
         this.HTTP_CONN = null;
         try
         {
@@ -109,7 +106,6 @@ public class Updater implements Runnable{
                     this.checkLocalObjects();
                 }
             }
-
             this.HTTP_CONN.disconnect();
         }
         catch(Exception httpex)
@@ -117,6 +113,10 @@ public class Updater implements Runnable{
             System.err.println(httpex);
         }
     }
+    
+    // all downloads are carried out by looking into CHANGED_OBJECTS list.
+    // the OLD_OBJECTS hold the last successfully used objects
+    // the DOWNLOADED_OBJECTS is responsible to hold list of objects found in central server
     
     private void checkLocalObjects()
     {
@@ -128,6 +128,7 @@ public class Updater implements Runnable{
                 String key = (String)enu.nextElement();
                 String value = (String)this.DOWNLOADED_OBJECTS.get(key);
                 this.OLD_OBJECTS.put(key, value);
+                this.CHANGED_OBJECTS.put(key, value);
             }
             this.FIRST_RUN = false;
         }
@@ -176,7 +177,6 @@ public class Updater implements Runnable{
                         {
                             System.err.println(ex);
                         }
-                    
                     }
                 }
             }
@@ -204,15 +204,12 @@ public class Updater implements Runnable{
                     System.out.println("Key:" + key + ", Value:" + this.CHANGED_OBJECTS.get(key));
                 }
                 Thread.sleep(15000);
-
                 //Thread.sleep(172800000); // this is 2 days * 24 hours * 60 minutes * 60 seconds * 1000 = 2 days in miliseconds
             }
             catch(Exception ex)
             {
                 
             }
-            //CONTINUE = false;
         }
-        
     }
 }
