@@ -133,6 +133,9 @@ public class Updater implements Runnable{
         }
         else
         {
+            // this is required to be sync between Launcher and Updater to keep track if
+            // the changed objects array is updated or not. Based on the changed objects,
+            // new jars are downloaded. This minimizes network usage and also downloads only what is required
             synchronized(this.CHANGED_OBJECTS)
             {
                 java.util.Enumeration enu = this.DOWNLOADED_OBJECTS.keys();
@@ -165,7 +168,7 @@ public class Updater implements Runnable{
                         {
                             if(!this.CHANGE_LOADED)
                             {
-                                wait();
+                                this.CHANGED_OBJECTS.wait();
                                 this.CHANGED_OBJECTS.put(downkey, downvalue);
                                 this.CHANGE_LOADED = false;
                             }
