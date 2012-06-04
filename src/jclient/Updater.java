@@ -245,12 +245,12 @@ public class Updater implements Runnable{
             {
                 this.readObjects();
                 java.util.Enumeration enu = this.CHANGED_OBJECTS.keys();
-                System.out.println("Changed Objects");
+                /*System.out.println("Changed Objects");
                 while(enu.hasMoreElements())
                 {
                     String key = (String)enu.nextElement();
                     System.out.println("Key:" + key + ", Value:" + this.CHANGED_OBJECTS.get(key));
-                }
+                }*/
                 Thread.sleep(15000);
                 //Thread.sleep(172800000); // this is 2 days * 24 hours * 60 minutes * 60 seconds * 1000 = 2 days in miliseconds
             }
