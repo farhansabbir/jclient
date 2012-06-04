@@ -17,6 +17,7 @@ public class Downloader implements Runnable{
     private Hashtable OBJECTS;
     private boolean DONE;
     private HttpURLConnection HTTP_CONN;
+    private Updater updater;
     
     public Downloader(String url, Updater updater)
     {

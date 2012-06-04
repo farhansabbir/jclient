@@ -132,6 +132,22 @@ public class Updater implements Runnable{
         this.CHANGED_OBJECTS.clear();
     }
     
+    public synchronized Hashtable getChange()
+    {
+        if(!this.CHANGE_LOADED)
+        {
+            try
+            {
+                wait();
+            }
+            catch(InterruptedException e)
+            {
+                
+            }
+        }
+        return this.CHANGED_OBJECTS;
+    }
+    
     /**
      * Below method checks and populates CHANGED_OBJECTS and OLD_OBJECTS from DOWNLOADED_OBJECTS read in readObjects()
      */
@@ -182,15 +198,16 @@ public class Updater implements Runnable{
                                 if(!this.CHANGE_LOADED) // before making any changes in CHANGED_OBJECTS, see if its contents were downloaded
                                 {
                                     this.CHANGED_OBJECTS.wait(); // wait for download to complete
-                                    this.CHANGED_OBJECTS.put(downkey, downvalue); // now put the object list in change order
-                                    this.CHANGE_LOADED = false; // toggle that the change needs to be downloaded again
-                                    this.CHANGED_OBJECTS.notifyAll(); // notify the download thread that new version is here
-                                    // later the downloader will update the OLD_OBJECTS as per the downloads made
                                 }
                             }catch(java.lang.InterruptedException ex)
                             {
                                 System.err.println(ex);
-                            }
+                            }    
+                            this.CHANGED_OBJECTS.put(downkey, downvalue); // now put the object list in change order
+                            this.CHANGE_LOADED = false; // toggle that the change needs to be downloaded again
+                            this.CHANGED_OBJECTS.notifyAll(); // notify the download thread that new version is here
+                            // later the downloader will update the OLD_OBJECTS as per the downloads made
+                                
                         }
                     }
                     else // this shows that OLD_OJECTS do not contain the downloaded object reference at all. So its a new download
